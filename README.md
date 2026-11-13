@@ -1,42 +1,39 @@
-# OPPOS — Ordens de Serviço
+# OPPOS
 
-Sistema de ordens de serviço para assistência técnica. Site estático (GitHub Pages) com login e banco de dados no Firebase (plano gratuito).
+Sistema web de **ordens de serviço** para assistências técnicas. Permite cadastrar clientes, aparelhos, peças e serviços, acompanhar o andamento de cada conserto e enviar ao cliente um link para ele ver a própria ordem.
 
-## Passo a passo (cerca de 20 minutos)
+O OPPOS roda direto no navegador, no computador ou no celular, sem instalar nada.
 
-### 1. Criar o projeto no Firebase
-1. Acesse https://console.firebase.google.com e entre com sua conta Google.
-2. Clique em **Criar projeto**, dê o nome **oppos** e siga até o fim. Pode desativar o Google Analytics.
+## O que o sistema faz
 
-### 2. Ativar o login por e-mail e senha
-1. No menu da esquerda: **Criação > Authentication > Vamos começar**.
-2. Aba **Método de login > E-mail/senha > Ativar > Salvar**.
+- **Ordens de serviço**: cadastro com cliente, aparelho, problema relatado, peças, serviços, técnico, garantia, datas e observações.
+- **Status da ordem**: Em aberto, Aguardando aprovação, Aguardando peça, Pronto para retirada, Entregue e Sem conserto.
+- **Filtros**: por estado, tipo de aparelho e busca por nome, modelo, número de série ou número da OS.
+- **Cadastros**: clientes, técnicos, peças e serviços, com preços. Ao criar uma ordem, os dados cadastrados aparecem como opção e preenchem os campos.
+- **Totais automáticos**: total de peças, total de serviços e total da ordem.
+- **Folha da ordem e PDF**: modelo pronto para imprimir ou baixar em PDF.
+- **WhatsApp**: envia ao cliente uma mensagem com status, valor e previsão de entrega, junto com um link da ordem.
+- **Link por ordem**: cada ordem gera o seu próprio link. O cliente abre a ordem numa página parecida com um PDF, e o conteúdo se atualiza quando a assistência altera a ordem. O link não mostra CPF, e-mail, telefone nem endereço do cliente.
+- **Contas**: cada usuário cria a sua conta, com e-mail e senha, e tem o seu próprio banco de dados. Há opção "Manter conectado", "Esqueci minha senha", troca de senha e exclusão da conta.
+- **Personalização**: cada conta define o nome da empresa, o CNPJ, o telefone e o endereço, que aparecem nas folhas e nas mensagens.
 
-### 3. Criar o banco de dados
-1. No menu: **Criação > Firestore Database > Criar banco de dados**.
-2. Local: **southamerica-east1 (São Paulo)**. Modo: **produção**.
-3. Abra a aba **Regras**, apague o que estiver lá, cole o conteúdo do arquivo `firestore.rules` e clique em **Publicar**.
+## Tecnologias
 
-### 4. Pegar as chaves e colar no site
-1. Engrenagem ao lado de **Visão geral do projeto > Configurações do projeto**.
-2. Em **Seus apps**, clique no ícone **</>** (Web), dê o apelido **oppos** e registre o app.
-3. Copie os valores de `firebaseConfig` e cole em `firebase-config.js`, trocando só o que está entre aspas.
+- HTML, CSS e JavaScript, sem framework.
+- **Firebase Authentication** para login e cadastro.
+- **Cloud Firestore** para o banco de dados.
+- **GitHub Pages** para hospedar o site.
+- **jsPDF** para gerar o PDF da ordem.
 
-### 5. Publicar no GitHub
-1. Em https://github.com/new crie o repositório **OPPOS**. Marque **Public** (o GitHub Pages gratuito exige repositório público).
-2. Clique em **uploading an existing file** e envie `index.html` e `firebase-config.js`. Os outros arquivos são opcionais. Clique em **Commit changes**.
-3. **Settings > Pages > Build and deployment > Source: Deploy from a branch**. Branch **main**, pasta **/ (root)**. Salve.
-4. Em 1 a 2 minutos o endereço aparece: `https://SEU-USUARIO.github.io/OPPOS/`.
+## Estrutura do projeto
 
-### 6. Autorizar o endereço no Firebase
-1. Firebase > **Authentication > Configurações > Domínios autorizados > Adicionar domínio**.
-2. Adicione `SEU-USUARIO.github.io`.
+- `index.html`: o sistema, com login, ordens e cadastros.
+- `os.html`: a página que o cliente abre pelo link da ordem.
+- `firebase-config.js`: as chaves do projeto Firebase.
+- `firestore.rules`: as regras de segurança do banco de dados.
 
-Pronto. Abra o endereço, clique em **Criar conta** e use o sistema.
+## Segurança
 
-## Observações
-- As chaves em `firebase-config.js` ficam visíveis a quem abrir o site. Isso é normal no Firebase. Quem protege os dados são as regras do passo 3.
-- Cada conta vê só as próprias ordens, clientes, técnicos, peças e serviços.
-- Limite gratuito do Firebase (Spark): 1 GiB de dados, 50 mil leituras e 20 mil gravações por dia. Cada vez que o sistema abre, ele lê todos os cadastros da conta.
-- "Esqueci minha senha" envia um e-mail de redefinição pelo Firebase.
-- Os dados do sistema antigo (claude.ai) não vêm sozinhos para cá. Refaça os cadastros, ou peça ajuda para exportar.
+- Cada conta lê e grava só os próprios dados. As regras em `firestore.rules` bloqueiam o acesso às informações de outras contas.
+- O link da ordem usa um código longo e aleatório. Só quem recebe o link consegue abrir aquela ordem, e ninguém consegue listar os links.
+- As chaves em `firebase-config.js` identificam o projeto e não são secretas. A proteção vem das regras do Firestore e, se desejar, da restrição da chave por site no Google Cloud.
