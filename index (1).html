@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OPPOS · Ordens de Serviço</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f1;--card:#fff;--ink:#14231a;--mut:#5d6b62;--line:#d9e0da;--g:#0a8a3c;--gd:#066b2d;--gl:#e3f3e8;--warn:#b45309;--r:8px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1812;--card:#17231b;--ink:#e8f0ea;--mut:#98a89d;--line:#2a3b2f;--g:#3fc272;--gd:#2fa95e;--gl:#1b3324;--warn:#f0a94a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1812;--card:#17231b;--ink:#e8f0ea;--mut:#98a89d;--line:#2a3b2f;--g:#3fc272;--gd:#2fa95e;--gl:#1b3324;--warn:#f0a94a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Barlow,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+header{background:var(--g);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+:root[data-theme="dark"] header,:root:not([data-theme="light"]) header{--hb:1}
+.brand{font:700 28px/1 "Barlow Condensed",Barlow,sans-serif;letter-spacing:.5px}
+.brand small{display:block;font:500 13px Barlow,sans-serif;opacity:.9;letter-spacing:0;margin-top:3px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+nav button.on{background:#fff;color:#066b2d}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+h2{font:700 26px "Barlow Condensed",Barlow,sans-serif;margin:0 0 14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 12px;font:600 14px Barlow,sans-serif;cursor:pointer}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.chip b{margin-left:4px;opacity:.75}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);font:16px Barlow,sans-serif}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--g);outline-offset:1px}
+label{font-weight:600;font-size:14px;display:block;margin-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.full{grid-column:1/-1}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:16px;margin:0 0 16px}
+legend{font:700 18px "Barlow Condensed",Barlow,sans-serif;padding:0 6px;color:var(--gd)}
+.btn{background:var(--g);color:#fff;border:0;border-radius:var(--r);padding:10px 16px;font:600 15px Barlow,sans-serif;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.sec{background:var(--gl);color:var(--gd)}
+.btn.del{background:transparent;color:#b42318;border:1px solid #b4231855}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center}
+.num{font:700 22px "Barlow Condensed",sans-serif;color:var(--gd)}
+.item h3{margin:0;font-size:17px}.item p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.st{font-weight:600;font-size:13px;padding:3px 10px;border-radius:99px;background:var(--gl);color:var(--gd);display:inline-block}
+.st.s-Aguardando\ aprovação,.st.s-Aguardando\ peça{background:#fdeccf;color:var(--warn)}
+.st.s-Entregue,.st.s-Sem\ conserto{background:var(--line);color:var(--mut)}
+.empty{text-align:center;padding:40px 16px;color:var(--mut);background:var(--card);border:1px dashed var(--line);border-radius:var(--r)}
+.sheet{background:#fff;color:#111;border:1px solid var(--line);border-radius:var(--r);padding:28px;max-width:800px;margin:16px auto}
+.sheet h1{margin:0;font:700 30px "Barlow Condensed",sans-serif;color:#066b2d}
+.sh{display:flex;justify-content:space-between;border-bottom:3px solid #0a8a3c;padding-bottom:10px;margin-bottom:12px;gap:12px}
+.sh .no{text-align:right;font:700 24px "Barlow Condensed",sans-serif}
+.sheet h4{margin:14px 0 4px;font:700 16px "Barlow Condensed",sans-serif;color:#066b2d;border-bottom:1px solid #ccc}
+.sheet table{width:100%;border-collapse:collapse;font-size:14px}.sheet td{padding:3px 6px 3px 0;vertical-align:top}.sheet td:first-child{width:130px;font-weight:600}
+.sheet .t{font-size:12px;color:#444;margin-top:12px;white-space:pre-line}
+.sig{display:flex;gap:40px;margin-top:44px}.sig div{flex:1;border-top:1px solid #111;text-align:center;font-size:13px;padding-top:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:600;z-index:9}
+.lockbox{max-width:380px;margin:40px auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.lockbox p{color:var(--mut);margin:6px 0 14px}
+#lockbtn{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+.locked nav,.locked #lockbtn,.locked #menubtn,.locked #side{display:none}
+.locked #who{display:none}
+#who{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 14px Barlow,sans-serif;cursor:pointer;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#who:hover{background:rgba(255,255,255,.28)}
+#who:empty{display:none}
+#side .out{margin-top:auto;background:rgba(255,255,255,.08)}
+.auth{max-width:420px;margin:40px auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:36px 34px 30px}
+.auth .logo2{text-align:center;font:700 40px "Barlow Condensed",Barlow,sans-serif;color:var(--g);letter-spacing:5px}
+.auth h1{font:600 26px Barlow,sans-serif;margin:10px 0 2px;text-align:center}
+.auth .sub{text-align:center;color:var(--mut);margin:0 0 22px}
+.auth input[type=email],.auth input[type=password],.auth input[type=text]{padding:13px 14px;margin-bottom:14px}
+.auth .chk{display:flex;align-items:center;gap:8px;font-weight:500;margin:2px 0 10px}.auth .chk input{width:auto;margin:0}
+.auth .err{color:#b42318;min-height:22px;font-size:14px;margin:6px 0}
+.auth .go{display:flex;justify-content:flex-end}
+.auth .or{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;margin:20px 0}.auth .or::before,.auth .or::after{content:"";flex:1;border-top:1px solid var(--line)}
+.auth .wide{width:100%;text-align:center}
+
+#menubtn{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+@media (hover:hover){#menubtn{display:none}}
+#side{position:fixed;top:0;left:0;bottom:0;width:230px;z-index:30;display:flex;flex-direction:column;flex-wrap:nowrap;gap:6px;padding:84px 12px 12px;background:linear-gradient(180deg,#434a56,#262b33);border-right:6px solid #9aa3b2;transform:translateX(-224px);transition:transform .18s ease}
+#side::after{content:"";position:absolute;top:0;bottom:0;right:-16px;width:16px}
+#side.open{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}
+@media (hover:hover){#side:hover,#side:focus-within{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}}
+#menubtn{position:relative;z-index:40}
+#side button{width:100%;text-align:left;background:rgba(255,255,255,.14);color:#fff;border:0;padding:12px 14px;border-radius:var(--r);font:600 16px Barlow,sans-serif;cursor:pointer}
+#side button:hover{background:rgba(255,255,255,.26)}
+#side button.on{background:#fff;color:#262b33;box-shadow:inset 5px 0 0 var(--g)}
+#hint{position:fixed;left:8px;top:50%;width:22px;height:56px;margin-top:-28px;z-index:25;pointer-events:none;opacity:.35;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:opacity .15s}
+#hint::before{content:"";width:10px;height:10px;border-top:3px solid currentColor;border-right:3px solid currentColor;transform:rotate(45deg);margin-left:-4px;border-radius:1px}
+body:has(#side:hover) #hint,body:has(#side:focus-within) #hint,body:has(#side.open) #hint,.locked #hint{opacity:0}
+@media (hover:none){#hint{display:none}}
+.crow{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:8px 0}
+.bh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.logo{background:#3a3a3a;color:#fff;font:700 26px/1 "Barlow Condensed",Barlow,sans-serif;letter-spacing:2px;padding:18px 22px}.logo span{color:#3fc272}
+.bi{text-align:right;font-size:13px;font-weight:600;line-height:1.4}
+.ttl{text-align:center;font:700 24px "Barlow Condensed",Barlow,sans-serif;margin:18px 0 4px}
+.lb{font-weight:700;font-size:13px;margin:12px 0 3px}
+.bx{border:1px solid #555;padding:6px 10px;min-height:32px;font-size:14px;overflow-wrap:anywhere}
+.cl2{display:grid;grid-template-columns:1.1fr 1.4fr;gap:8px}.g2{display:grid;grid-template-columns:1.2fr 1fr;gap:8px}
+.sc{overflow-x:auto}
+.sheet .it,.sheet .info{width:100%;border-collapse:collapse;font-size:13.5px}
+.sheet .it th,.sheet .it td,.sheet .info th,.sheet .info td{border:1px solid #555;padding:4px 8px;text-align:left;vertical-align:top}
+.sheet .it th,.sheet .info th{background:#eee;font-weight:700}
+.sheet .it td:first-child,.sheet .info td:first-child{width:auto;font-weight:400}
+.sheet .r{text-align:right}
+.tot{display:grid;grid-template-columns:1fr 1fr 1.4fr;margin-top:12px}.tot div{border:1px solid #555;padding:4px 10px;text-align:right}.tot span{display:block;font-weight:700;font-size:13px}.tot b{font-size:17px}
+.irow{display:grid;grid-template-columns:2fr 1fr 80px 110px 44px;gap:6px;margin-bottom:6px;align-items:center}.ihd{font-weight:600;font-size:13px;color:var(--mut)}
+@media (max-width:640px){.cl2,.g2{grid-template-columns:1fr}.irow{grid-template-columns:1fr 1fr}.ihd{display:none}.tot{grid-template-columns:1fr}}
+@media (max-width:600px){.item{grid-template-columns:1fr}.sheet{padding:16px}}
+@media print{body *{visibility:hidden}.sheet,.sheet *{visibility:visible}.sheet{position:absolute;left:0;top:0;width:100%;max-width:none;border:0;margin:0}}
+.auth .lnk{background:none;border:0;color:var(--g);font:600 14px Barlow,sans-serif;cursor:pointer;padding:0;margin:0 0 12px;text-decoration:underline}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+<header>
+  <div class="brand">OPPOS<small id="hsub">Ordens de serviço</small></div>
+  <nav id="side" aria-label="Principal">
+    <button data-v="list">Ordens</button>
+    <button data-v="form">Nova OS</button>
+    <button data-v="cad">Cadastros</button>
+    <button data-v="company">Dados da empresa</button>
+    <button class="out" id="logoff">⎋ Sair da conta</button>
+  </nav>
+  <div style="display:flex;gap:8px"><button id="menubtn" aria-label="Abrir menu">☰ Menu</button><button id="who" title="Minha conta" aria-label="Minha conta"></button></div>
+</header>
+<div id="hint" aria-hidden="true"></div>
+<main id="app"></main>
+
+<script>
+var STATUS=["Em aberto","Aguardando aprovação","Aguardando peça","Pronto para retirada","Entregue","Sem conserto"],OLDST={"Recebido":"Em aberto","Em análise":"Em aberto","Em conserto":"Em aberto"},MIG={};
+var TIPOS=["Câmera IP / HDCVI","DVR / NVR","Interfone / Videoporteiro","Central de alarme","Sensor / Cerca elétrica","Roteador / Switch / Access Point","Nobreak","Fechadura / Controle de acesso","Telefonia / PABX","Outro"];
+var DEF_TERMS="Garantia do serviço: 90 dias, restrita ao defeito reparado. A garantia não cobre mau uso, oxidação, descargas elétricas ou violação do lacre.\nEquipamentos não retirados em até 90 dias após o aviso de conclusão poderão ser descartados.\nO orçamento tem validade de 7 dias.";
+var orders=[],co={nome:"",sub:"",tel:"",end:"",cnpj:"",termos:""};
+var filt="Todos",q="",toastT;
+function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+var legacy=[],db=null,unsub=null,cur="list",curId=null;
+function screen(h){$("app").innerHTML=h}
+function msg(t,p){return '<div class="lockbox"><h2>'+t+'</h2><p>'+p+'</p></div>'}
+function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf)))}
+async function saveOrder(o){
+  o._k="orders";o.atualizado=new Date().toISOString();
+  try{await db.doc(P("orders",o.id)).set(o);if(!find(o.id))orders.push(o);return true}
+  catch(e){toast("Erro ao salvar. Tente novamente.");return false}
+}
+function cl(x){return JSON.parse(JSON.stringify(x))}
+function refresh(){
+  if(cur==="list"){var had=document.activeElement&&document.activeElement.id==="busca";vList();if(had){var b=$("busca");b.focus();b.setSelectionRange(q.length,q.length)}}
+  else if(cur==="view"&&!$("salvar"))vView(curId);
+}
+var uid=null,DP="",pre="",acc=null,oldDb=false,authBusy=false;
+function P(k,id){return DP+pre+k+"_"+id}
+function applyCo(){var b=document.querySelector(".brand");b.innerHTML='OPPOS<small id="hsub">Ordens de serviço</small>';document.title="OPPOS · "+(co.nome||"Ordens de serviço");var w=$("who");if(w&&acc)w.textContent=co.nome||acc.nome||"Minha conta"}
+function mkDb(){
+  var fs=firebase.firestore();
+  var col=function(u){return fs.collection("users").doc(u).collection("data")};
+  var wrap=function(sn){return{docs:sn.docs.map(function(d){return{id:d.id,data:function(){return d.data()}}})}};
+  return{
+    doc:function(path){var p=path.split("/"),r=col(p[2]).doc(p[3]);return{
+      set:function(v){return r.set(v)},delete:function(){return r.delete()},
+      get:function(){return r.get().then(function(s){return{exists:s.exists,data:function(){return s.data()}}})}}},
+    collection:function(path){var c=col(path.split("/")[2]);return{
+      get:function(){return c.get().then(wrap)},
+      onSnapshot:function(cb,eb){return c.onSnapshot(function(sn){cb(wrap(sn))},eb)}}}
+  };
+}
+function fbErr(e){
+  var c=(e&&e.code)||"";
+  if(/invalid-credential|user-not-found|wrong-password|invalid-login/.test(c))return "E-mail ou senha incorretos.";
+  if(c==="auth/email-already-in-use")return "Esse e-mail já tem conta. Volte e clique em Entrar.";
+  if(c==="auth/weak-password")return "A senha precisa ter pelo menos 8 caracteres.";
+  if(c==="auth/invalid-email")return "Digite um e-mail válido.";
+  if(c==="auth/too-many-requests")return "Muitas tentativas. Tente de novo em alguns minutos.";
+  if(c==="auth/network-request-failed")return "Sem conexão com a internet.";
+  if(c==="auth/requires-recent-login")return "Entre de novo para continuar.";
+  return "Erro inesperado. Tente de novo.";
+}
+function boot(){
+  document.body.classList.add("locked");
+  var k=window.FIREBASE_CONFIG;
+  if(!window.firebase||!k||!k.apiKey||/COLE_AQUI/.test(k.apiKey))return screen(msg("Configuração pendente","Abra o arquivo firebase-config.js e cole as chaves do seu projeto Firebase. O passo a passo está no README."));
+  try{firebase.initializeApp(k);db=mkDb();firebase.auth().languageCode="pt"}
+  catch(e){return screen(msg("Erro de configuração","Confira as chaves em firebase-config.js."))}
+  screen(msg("Carregando…","Conectando."));
+  firebase.auth().onAuthStateChanged(function(u){
+    if(u){if(!authBusy)afterAuth(u)}
+    else{if(unsub){unsub();unsub=null}uid=null;acc=null;orders=[];clientes=[];tecnicos=[];pecas=[];servicos=[];co={nome:"",sub:"",tel:"",end:"",cnpj:"",termos:""};applyCo();loginScreen()}
+  });
+}
+function afterAuth(u){acc={nome:u.displayName||"",email:u.email||""};uid=u.uid;DP="data/users/"+uid+"/";enter()}
+function loginScreen(){
+  document.body.classList.add("locked");
+  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Fazer login</h1><p class="sub">Use a sua conta do sistema</p><label for="l_em">E-mail</label><input id="l_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="l_pw">Senha</label><input id="l_pw" type="password" autocomplete="current-password"><button type="button" class="lnk" id="l_forgot">Esqueci minha senha</button><label class="chk"><input type="checkbox" id="l_show"> Mostrar senha</label><label class="chk"><input type="checkbox" id="l_keep"> Manter conectado</label><p class="err" id="l_err" role="alert"></p><div class="go"><button class="btn" id="l_go">Entrar</button></div><div class="or">ou</div><button class="btn sec wide" id="l_new">Criar conta</button></div>');
+  $("l_show").onchange=function(){$("l_pw").type=this.checked?"text":"password"};
+  $("l_go").onclick=doLogin;$("l_pw").onkeydown=function(e){if(e.key==="Enter")doLogin()};
+  $("l_new").onclick=signupScreen;$("l_em").focus();
+  $("l_forgot").onclick=async function(){
+    var em=$("l_em").value.trim(),er=$("l_err");
+    if(!em){er.textContent="Digite seu e-mail acima para receber o link.";return}
+    try{await firebase.auth().sendPasswordResetEmail(em);er.style.color="var(--gd)";er.textContent="Se esse e-mail tiver conta, enviamos um link para criar uma nova senha."}
+    catch(e){er.textContent=fbErr(e)}
+  };
+}
+function signupScreen(){
+  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Criar conta</h1><p class="sub">Cada conta tem o seu próprio sistema de ordens</p><label for="s_nm">Nome</label><input id="s_nm" type="text" autocomplete="name"><label for="s_em">E-mail</label><input id="s_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="s_pw">Senha (mínimo 8 caracteres)</label><input id="s_pw" type="password" autocomplete="new-password"><label for="s_pw2">Confirmar senha</label><input id="s_pw2" type="password" autocomplete="new-password"><label class="chk"><input type="checkbox" id="s_keep"> Manter conectado</label><p class="err" id="s_err" role="alert"></p><div class="go"><button class="btn" id="s_go">Cadastrar</button></div><div class="or">ou</div><button class="btn sec wide" id="s_back">Já tenho conta</button></div>');
+  $("s_go").onclick=doSignup;$("s_back").onclick=loginScreen;$("s_nm").focus();
+}
+async function doLogin(){
+  var er=function(t){$("l_err").textContent=t},em=$("l_em").value.trim(),pw=$("l_pw").value;
+  if(!em||!pw)return er("Digite o e-mail e a senha.");
+  $("l_go").disabled=true;authBusy=true;
+  try{
+    var au=firebase.auth();
+    await au.setPersistence($("l_keep").checked?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
+    var c=await au.signInWithEmailAndPassword(em,pw);authBusy=false;afterAuth(c.user);
+  }catch(e){authBusy=false;$("l_go").disabled=false;er(fbErr(e))}
+}
+async function doSignup(){
+  var er=function(t){$("s_err").textContent=t},nm=$("s_nm").value.trim(),em=$("s_em").value.trim(),pw=$("s_pw").value;
+  if(!nm)return er("Informe o seu nome.");
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return er("Digite um e-mail válido.");
+  if(pw.length<8)return er("A senha precisa ter pelo menos 8 caracteres.");
+  if(pw!==$("s_pw2").value)return er("As senhas não são iguais.");
+  $("s_go").disabled=true;authBusy=true;
+  try{
+    var au=firebase.auth();
+    await au.setPersistence($("s_keep").checked?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
+    var c=await au.createUserWithEmailAndPassword(em,pw);
+    await c.user.updateProfile({displayName:nm});authBusy=false;afterAuth(c.user);
+  }catch(e){authBusy=false;$("s_go").disabled=false;er(fbErr(e))}
+}
+async function enter(){
+  $("who").textContent=(acc&&(acc.nome||acc.email))||"";
+  try{
+    var sn=await db.doc(P("config","empresa")).get();
+    if(sn.exists){co=Object.assign(co,cl(sn.data()));start()}else coForm(true);
+  }catch(e){screen(msg("Banco indisponível","Não foi possível conectar ao Firebase. Confira as regras do Firestore e a configuração."))}
+}
+async function logoff(){
+  if(unsub){unsub();unsub=null}
+  $("side").classList.remove("open");
+  try{await firebase.auth().signOut()}catch(e){}
+}
+function start(){
+  document.body.classList.remove("locked");applyCo();
+  unsub=db.collection("data/users/"+uid).onSnapshot(function(sn){
+    var all=sn.docs.filter(function(d){return pre?d.id.indexOf(pre)===0:/^(orders|clientes|tecnicos|pecas|servicos|config)_/.test(d.id)}).map(function(d){return cl(d.data())}),by=function(k){return all.filter(function(x){return x._k===k})};
+    orders=by("orders");clientes=by("clientes");tecnicos=by("tecnicos");pecas=by("pecas");servicos=by("servicos");
+    orders.forEach(function(o){var n=OLDST[o.status];if(n&&!MIG[o.id]){MIG[o.id]=1;o.status=n;saveOrder(o)}});
+    refresh();
+  },function(){toast("Falha ao sincronizar com o banco")});
+  go("list");
+}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function $(id){return document.getElementById(id)}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function br(d){return d?d.split("-").reverse().join("/"):"—"}
+function money(v){return v?Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"}):"A definir"}
+function pad(n){return String(n).padStart(4,"0")}
+function toast(m){clearTimeout(toastT);var o=document.querySelector(".toast");if(o)o.remove();var t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);toastT=setTimeout(function(){t.remove()},2400)}
+function find(id){return orders.find(function(o){return o.id===id})}
+
+function nav(v){document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)})}
+document.querySelectorAll("nav button[data-v]").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
+function go(v,id){cur=v;curId=id;nav(v);window.scrollTo(0,0);if(v==="list")vList();else if(v==="form")vForm(id);else if(v==="view")vView(id);else if(v==="cad")vCad();else if(v==="conta")vConta();else vCompany()}
+
+/* LISTA */
+function vList(){
+  var cnt={Todos:orders.length};STATUS.forEach(function(s){cnt[s]=orders.filter(function(o){return o.status===s}).length});
+  var h=(oldDb?'<div class="empty" style="margin-bottom:14px">Encontrei os dados da versão anterior do sistema. <button class="btn" id="imp3">Mover para a minha conta</button></div>':"")+(legacy.length?'<div class="empty" style="margin-bottom:14px">Há '+legacy.length+' ordem(ns) salva(s) só neste navegador. <button class="btn" id="imp2">Importar para o banco de dados</button></div>':"")+'<h2>Ordens de serviço</h2><div class="chips">';
+  ["Todos"].concat(STATUS).forEach(function(s){h+='<button class="chip'+(filt===s?" on":"")+'" data-f="'+esc(s)+'">'+esc(s)+'<b>'+cnt[s]+'</b></button>'});
+  h+='</div><div class="row" style="margin-bottom:10px;align-items:flex-end"><div style="flex:1;min-width:150px"><label for="fs">Filtrar por estado</label><select id="fs">'+["Todos"].concat(STATUS).map(function(s){return '<option value="'+esc(s)+'"'+(filt===s?" selected":"")+'>'+esc(s)+' ('+cnt[s]+')</option>'}).join("")+'</select></div><div style="flex:1;min-width:150px"><label for="ft">Tipo de aparelho</label><select id="ft">'+["Todos"].concat(TIPOS).map(function(t){return '<option'+(ftipo===t?" selected":"")+'>'+esc(t)+'</option>'}).join("")+'</select></div><div style="flex:1;min-width:150px"><label for="fo">Ordenar por</label><select id="fo"><option value="recentes"'+(sortm==="recentes"?" selected":"")+'>Mais recentes</option><option value="antigas"'+(sortm==="antigas"?" selected":"")+'>Mais antigas</option><option value="prazo"'+(sortm==="prazo"?" selected":"")+'>Previsão de entrega</option></select></div></div><div class="row" style="margin-bottom:14px"><input id="busca" placeholder="Buscar por cliente, modelo, nº de série ou nº da OS" value="'+esc(q)+'" style="flex:1;min-width:220px"><button class="btn" id="novo">Nova OS</button></div><div id="lista"></div>';
+  $("app").innerHTML=h;
+  document.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){filt=c.dataset.f;vList()}});
+  $("novo").onclick=function(){go("form")};if($("imp2"))$("imp2").onclick=importLegacy;if($("imp3"))$("imp3").onclick=importOld;
+  $("busca").oninput=function(){q=this.value;drawItems()};$("fs").onchange=function(){filt=this.value;vList()};$("ft").onchange=function(){ftipo=this.value;drawItems()};$("fo").onchange=function(){sortm=this.value;drawItems()};
+  drawItems();
+}
+var ftipo="Todos",sortm="recentes";
+function drawItems(){
+  var t=q.toLowerCase().trim();
+  var l=orders.filter(function(o){
+    if(filt!=="Todos"&&o.status!==filt)return false;
+    if(ftipo!=="Todos"&&o.tipo!==ftipo)return false;
+    return !t||[pad(o.num),o.cliente,o.modelo,o.serie,o.tipo,o.tel].join(" ").toLowerCase().indexOf(t)>-1;
+  }).sort(function(a,b){if(sortm==="antigas")return a.num-b.num;if(sortm==="prazo"){if(!a.prazo&&!b.prazo)return b.num-a.num;if(!a.prazo)return 1;if(!b.prazo)return -1;return a.prazo<b.prazo?-1:a.prazo>b.prazo?1:0}return b.num-a.num});
+  if(!l.length){$("lista").innerHTML='<div class="empty">'+(orders.length?"Nenhuma ordem encontrada com esse filtro.":"Você ainda não tem ordens. Clique em “Nova OS” para registrar o primeiro aparelho.")+'</div>';return}
+  $("lista").innerHTML=l.map(function(o){
+    return '<div class="item"><div class="num">#'+pad(o.num)+'</div><div><h3>'+esc(o.cliente)+'</h3><p>'+esc(o.tipo)+(o.modelo?" · "+esc(o.modelo):"")+' · entrada '+br(o.data)+'</p><p style="margin-top:6px"><span class="st s-'+esc(o.status)+'">'+esc(o.status)+'</span></p></div><div class="row"><button class="btn" data-a="v" data-id="'+o.id+'">Abrir</button><select data-a="s" data-id="'+o.id+'" aria-label="Alterar status" style="width:auto">'+STATUS.map(function(s){return '<option'+(s===o.status?" selected":"")+'>'+s+'</option>'}).join("")+'</select></div></div>'}).join("");
+  document.querySelectorAll("[data-a=v]").forEach(function(b){b.onclick=function(){go("view",b.dataset.id)}});
+  document.querySelectorAll("[data-a=s]").forEach(function(s){s.onchange=function(){var o=find(s.dataset.id);o.status=s.value;o.hist=(o.hist||[]).concat({em:new Date().toISOString(),status:s.value});saveOrder(o).then(function(ok){if(ok)toast("Status atualizado")});vList()}});
+}
+
+/* FORMULÁRIO */
+function f(id,l,v,type,ph){return '<div><label for="'+id+'">'+l+'</label><input id="'+id+'" type="'+(type||"text")+'" value="'+esc(v)+'" placeholder="'+(ph||"")+'"></div>'}
+function calc(L){var p=0,s=0;(L||[]).forEach(function(i){var v=(+i.qtd||0)*(+i.preco||0);if(i.t==="s")s+=v;else p+=v});return{p:p,s:s}}
+function n2(v){return (+v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function brl(v){return "R$ "+n2(v)}
+function vForm(id){
+  var o=id?find(id):null,d=o||{data:today(),status:"Em aberto",tipo:TIPOS[0],gar:"3 meses"},L=cl(d.itens||[]);
+  var h='<h2>'+(o?"Editar OS #"+pad(o.num):"Nova ordem de serviço")+'</h2>';
+  h+='<fieldset><legend>Cliente</legend><div class="grid"><div><label for="cliente">Nome *</label><input id="cliente" list="cl-list" autocomplete="off" value="'+esc(d.cliente)+'" placeholder="Digite ou escolha um cliente cadastrado"><datalist id="cl-list">'+clientes.map(function(c){return '<option value="'+esc(c.nome)+'">'}).join("")+'</datalist></div>'+f("tel","WhatsApp / telefone *",d.tel,"tel","(11) 99999-9999")+f("doc","CPF / CNPJ",d.doc)+f("email","E-mail",d.email,"email")+f("cend","Endereço",d.cend)+'<div class="full"><label style="font-weight:500"><input type="checkbox" id="lgpd" style="width:auto;margin-right:8px"'+(d.lgpd?" checked":"")+'>O cliente autorizou o uso dos seus dados apenas para este atendimento (LGPD). *</label></div></div></fieldset>';
+  h+='<fieldset><legend>Aparelho</legend><div class="grid"><div><label for="tipo">Tipo *</label><select id="tipo">'+TIPOS.map(function(t){return '<option'+(t===d.tipo?" selected":"")+'>'+t+'</option>'}).join("")+'</select></div>'+f("modelo","Modelo",d.modelo,"text","Ex.: MHDX 1308")+f("serie","Nº de série",d.serie)+f("acess","Acessórios entregues",d.acess,"text","Fonte, cabo, controle…")+'<div class="full"><label for="defeito">Problema relatado pelo cliente *</label><textarea id="defeito" rows="3">'+esc(d.defeito)+'</textarea></div><div class="full"><label for="estado">Estado físico na entrada</label><textarea id="estado" rows="2" placeholder="Riscos, trincas, lacre violado…">'+esc(d.estado)+'</textarea></div></div></fieldset>';
+  h+='<fieldset><legend>Serviço</legend><div class="grid">'+f("data","Data de entrada",d.data,"date")+f("prazo","Data prevista",d.prazo,"date")+f("dconc","Data de conclusão",d.dconc,"date")+'<div><label for="status">Status</label><select id="status">'+STATUS.map(function(s){return '<option'+(s===d.status?" selected":"")+'>'+s+'</option>'}).join("")+'</select></div><div><label for="tec">Técnico responsável</label><select id="tec"><option value="">Selecione</option>'+techOpts(d.tec)+'</select></div><div><label for="gar">Garantia do serviço</label><select id="gar">'+["3 meses","6 meses","Não"].map(function(x){return '<option'+(d.gar===x||(!d.gar&&x==="3 meses")?" selected":"")+'>'+x+'</option>'}).join("")+'</select></div><div class="full"><label for="laudo">Observações do serviço / laudo técnico</label><textarea id="laudo" rows="3">'+esc(d.laudo)+'</textarea></div></div></fieldset>';
+  h+='<fieldset><legend>Peças e serviços</legend><div id="itens"></div><div class="row" style="margin-top:10px"><select id="addp" style="flex:1;min-width:190px"><option value="">+ Peça cadastrada</option>'+pecas.slice().sort(cmp).map(function(p){return '<option value="'+esc(p.id)+'">'+esc(p.nome)+' — '+brl(p.preco)+'</option>'}).join("")+'</select><select id="adds" style="flex:1;min-width:190px"><option value="">+ Serviço cadastrado</option>'+servicos.slice().sort(cmp).map(function(p){return '<option value="'+esc(p.id)+'">'+esc(p.nome)+' — '+brl(p.preco)+'</option>'}).join("")+'</select></div><div class="row" style="margin-top:8px"><button class="btn sec" id="avp">+ Peça avulsa</button><button class="btn sec" id="avs">+ Serviço avulso</button></div><p id="tots" style="margin:12px 0 0"></p></fieldset>';
+  h+='<div class="row"><button class="btn" id="salvar">Salvar ordem</button><button class="btn sec" id="canc">Cancelar</button></div>';
+  $("app").innerHTML=h;
+  function totals(){var t=calc(L);$("tots").innerHTML='Total serviços: <b>'+brl(t.s)+'</b> · Total peças: <b>'+brl(t.p)+'</b> · <b>Total da ordem: '+brl(t.p+t.s)+'</b>'}
+  function drawL(){
+    var x="";
+    [["p","Peças"],["s","Serviços"]].forEach(function(g){
+      var idx=[];L.forEach(function(it,i){if((it.t==="s")===(g[0]==="s"))idx.push(i)});
+      if(!idx.length)return;
+      x+='<h4 style="margin:10px 0 6px">'+g[1]+'</h4><div class="irow ihd"><span>Descrição</span><span>'+(g[0]==="p"?"Código":"")+'</span><span>Qtd</span><span>Preço (R$)</span><span></span></div>';
+      idx.forEach(function(i){var it=L[i];
+        x+='<div class="irow"><input data-i="'+i+'" data-k="desc" value="'+esc(it.desc)+'" aria-label="Descrição">'+(g[0]==="p"?'<input data-i="'+i+'" data-k="cod" value="'+esc(it.cod)+'" aria-label="Código">':'<span></span>')+'<input type="number" min="0" step="1" data-i="'+i+'" data-k="qtd" value="'+it.qtd+'" aria-label="Quantidade"><input type="number" min="0" step="0.01" data-i="'+i+'" data-k="preco" value="'+it.preco+'" aria-label="Preço"><button class="btn del" data-rm="'+i+'" aria-label="Remover item">✕</button></div>'});
+    });
+    $("itens").innerHTML=x||'<p style="color:var(--mut);margin:0">Nenhuma peça ou serviço adicionado.</p>';
+    document.querySelectorAll("#itens [data-k]").forEach(function(inp){inp.oninput=function(){var k=inp.dataset.k,i=+inp.dataset.i;L[i][k]=(k==="qtd"||k==="preco")?(parseFloat(inp.value)||0):inp.value;totals()}});
+    document.querySelectorAll("#itens [data-rm]").forEach(function(b){b.onclick=function(){L.splice(+b.dataset.rm,1);drawL()}});
+    totals();
+  }
+  drawL();
+  $("addp").onchange=function(){var p=pecas.find(function(x){return x.id===$("addp").value});if(p){L.push({t:"p",desc:p.nome,cod:p.cod||"",qtd:1,preco:+p.preco||0});drawL()}$("addp").value=""};
+  $("adds").onchange=function(){var p=servicos.find(function(x){return x.id===$("adds").value});if(p){L.push({t:"s",desc:p.nome,cod:"",qtd:1,preco:+p.preco||0});drawL()}$("adds").value=""};
+  $("avp").onclick=function(){L.push({t:"p",desc:"",cod:"",qtd:1,preco:0});drawL()};
+  $("avs").onclick=function(){L.push({t:"s",desc:"",cod:"",qtd:1,preco:0});drawL()};
+  $("canc").onclick=function(){go(o?"view":"list",id)};
+  $("cliente").addEventListener("input",function(){var v=this.value.trim().toLowerCase(),c=clientes.find(function(x){return x.nome.toLowerCase()===v});if(c){if(c.tel)$("tel").value=c.tel;if(c.doc)$("doc").value=c.doc;if(c.email)$("email").value=c.email;if(c.end)$("cend").value=c.end}});
+  $("salvar").onclick=async function(){
+    var g=function(k){return $(k).value.trim()};
+    if(!g("cliente")||!g("tel")||!g("defeito")){toast("Preencha nome, telefone e problema relatado");return}
+    if(!$("lgpd").checked){toast("Confirme a autorização do cliente para uso dos dados (LGPD)");return}
+    var r=o||{id:"o"+Date.now(),num:orders.reduce(function(m,x){return Math.max(m,x.num)},0)+1};
+    ["cliente","tel","doc","email","cend","tipo","modelo","serie","acess","defeito","estado","data","prazo","dconc","status","tec","gar","laudo"].forEach(function(k){r[k]=g(k)});
+    r.itens=L.filter(function(i){return String(i.desc).trim()}).map(function(i){return {t:i.t,desc:String(i.desc).trim(),cod:String(i.cod||"").trim(),qtd:+i.qtd||0,preco:+i.preco||0}});
+    var tt=calc(r.itens),tot=tt.p+tt.s;r.valor=tot?String(Math.round(tot*100)/100):"";
+    r.lgpd=true;
+    if(!o){r.criado=new Date().toISOString();r.hist=[{em:r.criado,status:r.status}]}
+    else if(o.hist&&o.hist.length&&o.hist[o.hist.length-1].status!==r.status)r.hist=o.hist.concat({em:new Date().toISOString(),status:r.status});
+    $("salvar").disabled=true;
+    if(await saveOrder(r)){toast("Ordem #"+pad(r.num)+" salva");go("view",r.id)}else $("salvar").disabled=false;
+  };
+}
+
+/* VISUALIZAÇÃO / IMPRESSÃO */
+function row(a,b){return '<tr><td>'+a+'</td><td>'+(b?esc(b):"—")+'</td></tr>'}
+function sheetHtml(o){
+  var it=o.itens||[],pc=it.filter(function(i){return i.t!=="s"}),sv=it.filter(function(i){return i.t==="s"}),t=calc(it);
+  if(!it.length&&o.valor)t.p=+o.valor||0;
+  var b=function(x){return '<div class="bx">'+(x?esc(x):"&nbsp;")+'</div>'},td=function(x,c){return '<td'+(c?' class="'+c+'"':"")+'>'+esc(x)+'</td>'};
+  var nm=String(co.nome||"").toUpperCase(),k=nm.indexOf("BRAZ"),logo=k>0?esc(nm.slice(0,k))+'<span>'+esc(nm.slice(k))+'</span>':esc(nm);
+  var cli=[o.cliente&&String(o.cliente).toUpperCase(),o.doc,o.cend,[o.tel,o.email].filter(Boolean).join("  ")].filter(Boolean).map(esc).join("<br>");
+  var h='<div class="sheet"><div class="bh"><div class="logo">'+logo+'</div><div class="bi">'+[nm,co.tel?"FONE: "+co.tel:"",co.end,co.cnpj?"CNPJ: "+co.cnpj:""].filter(Boolean).map(esc).join("<br>")+'</div></div>';
+  h+='<div class="ttl">Ordem de serviço Nº '+pad(o.num)+'</div>';
+  h+='<div class="lb">Cliente</div><div class="cl2"><div class="bx">'+cli+'</div><table class="info"><tr><th>Número da OS</th><td>'+pad(o.num)+'</td><th>Data de entrada</th><td>'+br(o.data)+'</td></tr><tr><th>Data prevista</th><td>'+(o.prazo?br(o.prazo):"")+'</td><th>Data de conclusão</th><td>'+(o.dconc?br(o.dconc):"")+'</td></tr><tr><th>Status</th><td colspan="3">'+esc(o.status)+'</td></tr></table></div>';
+  h+='<div class="g2"><div><div class="lb">Equipamento</div>'+b([o.tipo,o.modelo].filter(Boolean).join(" · "))+'</div><div><div class="lb">Número de série do equipamento</div>'+b(o.serie)+'</div></div>';
+  h+='<div class="lb">Problema</div>'+b(o.defeito);
+  h+='<div class="lb">Peças</div><div class="sc"><table class="it"><tr><th>Descrição</th><th>Código</th><th class="r">Quantidade</th><th>UN</th><th class="r">Preço un</th><th class="r">Valor total</th></tr>'+(pc.length?pc.map(function(i){return '<tr>'+td(i.desc)+td(i.cod)+td(i.qtd,"r")+td("PE")+td(n2(i.preco),"r")+td(n2(i.qtd*i.preco),"r")+'</tr>'}).join(""):'<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>')+'</table></div>';
+  if(sv.length)h+='<div class="lb">Serviços</div><div class="sc"><table class="it"><tr><th>Descrição</th><th class="r">Quantidade</th><th class="r">Preço un</th><th class="r">Valor total</th></tr>'+sv.map(function(i){return '<tr>'+td(i.desc)+td(i.qtd,"r")+td(n2(i.preco),"r")+td(n2(i.qtd*i.preco),"r")+'</tr>'}).join("")+'</table></div>';
+  h+='<div class="tot"><div><span>Total serviços</span><b>'+n2(t.s)+'</b></div><div><span>Total peças</span><b>'+n2(t.p)+'</b></div><div><span>Total da ordem de serviço</span><b>'+n2(t.p+t.s)+'</b></div></div>';
+  h+='<div class="lb">Garantia</div>'+b(o.gar||"3 meses");
+  var rec=[o.acess?"Acessórios: "+o.acess:"",o.estado?"Estado na entrada: "+o.estado:""].filter(Boolean).join(" · ");
+  h+='<div class="lb">Observações do recebimento</div>'+b(rec)+'<div class="lb">Observações do serviço</div>'+b(o.laudo)+'<div class="lb">Informações do técnico</div>'+b(o.tec?"Técnico: "+o.tec:"");
+  return h+'<div class="sig"><div>Assinatura do cliente</div><div>'+esc(co.nome)+'</div></div></div>';
+}
+function vView(id){
+  var o=find(id);if(!o)return go("list");
+  var h='<div class="row"><button class="btn sec" id="voltar">Voltar</button><button class="btn sec" id="imp">Imprimir OS</button><button class="btn" id="pdf">Baixar PDF</button><a class="btn" id="wa" target="_blank" rel="noopener">Enviar por WhatsApp</a><button class="btn sec" id="ed">Editar</button><button class="btn del" id="del">Excluir</button></div>'+sheetHtml(o)+'<p style="color:var(--mut);font-size:14px">Histórico: '+(o.hist&&o.hist.length?o.hist.map(function(x){return new Date(x.em).toLocaleString("pt-BR")+" — "+esc(x.status)}).join("; "):"sem alterações de status")+'</p>';
+  $("app").innerHTML=h;
+  $("voltar").onclick=function(){go("list")};$("imp").onclick=function(){try{window.print()}catch(e){toast("Use Ctrl+P para imprimir")}};
+  $("ed").onclick=function(){go("form",id)};$("pdf").onclick=function(){pdfOS(o)};
+  $("del").onclick=function(){armDel($("del"),function(){db.doc(P("orders",id)).delete().then(function(){orders=orders.filter(function(x){return x.id!==id});toast("Ordem excluída");go("list")}).catch(function(){toast("Erro ao excluir")})})};
+  var tt=calc(o.itens||[]),tot=tt.p+tt.s||(+o.valor||0);
+  var msg="Olá, "+o.cliente.split(" ")[0]+"! Aqui é da "+co.nome+(co.sub?" ("+co.sub+")":"")+".\nOrdem de serviço nº "+pad(o.num)+" — "+o.tipo+(o.modelo?" "+o.modelo:"")+".\nStatus: "+o.status+"."+(tot?"\nValor do orçamento: "+brl(tot)+".":"")+(o.prazo?"\nPrevisão de entrega: "+br(o.prazo)+".":"")+"\nQualquer dúvida, é só responder esta mensagem.";
+  var dg=o.tel.replace(/\D/g,"");if(dg.length<=11)dg="55"+dg;
+  $("wa").href="https://wa.me/"+dg+"?text="+encodeURIComponent(msg);
+}
+async function pdfOS(o){
+  if(!window.jspdf){toast("A biblioteca de PDF não carregou. Use Imprimir OS.");return}
+  var d=new window.jspdf.jsPDF({unit:"mm",format:"a4"}),W=210,m=12,cw=W-2*m,y=12;
+  var it=o.itens||[],pc=it.filter(function(i){return i.t!=="s"}),sv=it.filter(function(i){return i.t==="s"}),t=calc(it);
+  if(!it.length&&o.valor)t.p=+o.valor||0;
+  var need=function(h){if(y+h>287){d.addPage();y=12}};
+  d.setLineWidth(.25);d.setDrawColor(70);
+  var fnt=function(b){d.setFont("helvetica",b?"bold":"normal");d.setFontSize(8.5);d.setTextColor(20)};
+  var lines=function(s,w,b){fnt(b);return d.splitTextToSize(String(s==null?"":s),w-3).length};
+  var cell=function(x,w,h,s,b,al,fill){
+    if(fill){d.setFillColor(fill[0],fill[1],fill[2]);d.rect(x,y,w,h,"FD")}else d.rect(x,y,w,h);
+    fnt(b);d.text(d.splitTextToSize(String(s==null?"":s),w-3),al==="r"?x+w-1.5:x+1.5,y+4.2,al==="r"?{align:"right"}:undefined);
+  };
+  var lab=function(s,x){d.setFont("helvetica","bold");d.setFontSize(9);d.setTextColor(20);d.text(s,x==null?m:x,y+3)};
+  
+  var box=function(title,s){var h=Math.max(7,lines(s,cw)*3.8+3.4);need(h+8);lab(title);y+=4.5;cell(m,cw,h,s);y+=h+2};
+  d.setFillColor(58,58,58);d.rect(m,y,66,20,"F");
+  d.setFont("helvetica","bold");d.setFontSize(17);d.setTextColor(255);
+  var nm=String(co.nome||"").toUpperCase(),k=nm.indexOf("BRAZ"),a=k>0?nm.slice(0,k):nm,b2=k>0?nm.slice(k):"";
+  d.text(a,m+5,y+12.5);if(b2){d.setTextColor(63,194,114);d.text(b2,m+5+d.getTextWidth(a),y+12.5)}
+  fnt(1);[nm,co.tel?"FONE: "+co.tel:"",co.end,co.cnpj?"CNPJ: "+co.cnpj:""].filter(Boolean).forEach(function(s,i){d.text(String(s),W-m,y+4+i*4.2,{align:"right"})});
+  y+=28;d.setFont("helvetica","bold");d.setFontSize(14);d.setTextColor(20);d.text("Ordem de serviço Nº "+pad(o.num),W/2,y,{align:"center"});y+=7;
+  lab("Cliente");y+=4.5;
+  var cli=[o.cliente&&String(o.cliente).toUpperCase(),o.doc,o.cend,[o.tel,o.email].filter(Boolean).join("  ")].filter(Boolean).join("\n");
+  var lw=96,rw=cw-lw-4,ch=Math.max(25,lines(cli,lw)*3.8+3.4),x2=m+lw+4,rh=ch/3,y0=y,cwid=[22,17,26,rw-65];
+  cell(m,lw,ch,cli);
+  [["Número da OS",pad(o.num),"Data de entrada",br(o.data)],["Data prevista",o.prazo?br(o.prazo):"","Data de conclusão",o.dconc?br(o.dconc):""],["Status",o.status]].forEach(function(r,i){
+    var xx=x2;y=y0+i*rh;
+    r.forEach(function(c,j){var w=(i===2&&j===1)?cwid[1]+cwid[2]+cwid[3]:cwid[j];cell(xx,w,rh,c,j%2===0,"l",j%2===0?[235,235,235]:null);xx+=w});
+  });
+  y=y0+ch+4;
+  var eq=[o.tipo,o.modelo].filter(Boolean).join(" · "),eh=Math.max(7,lines(eq,lw)*3.8+3.4,lines(o.serie,rw)*3.8+3.4);
+  need(eh+8);lab("Equipamento");lab("Número de série do equipamento",x2);y+=4.5;cell(m,lw,eh,eq);cell(x2,rw,eh,o.serie);y+=eh+3;
+  box("Problema",o.defeito);
+  var trow=function(cells,w,al,hd){
+    var h=hd?7:Math.max(6.5,Math.max.apply(null,cells.map(function(c,i){return lines(c,w[i])}))*3.8+2.6),xx=m;
+    need(h);cells.forEach(function(c,i){cell(xx,w[i],h,c,hd,al[i],hd?[235,235,235]:null);xx+=w[i]});y+=h;
+  };
+  need(24);lab("Peças");y+=4.5;
+  var pw=[62,28,18,12,32,34],pa=["l","l","r","l","r","r"];
+  trow(["Descrição","Código","Quantidade","UN","Preço un","Valor total"],pw,pa,1);
+  pc.forEach(function(i){trow([i.desc,i.cod||"",String(i.qtd),"PE",n2(i.preco),n2(i.qtd*i.preco)],pw,pa)});
+  if(!pc.length)trow(["","","","","",""],pw,pa);
+  y+=3;
+  if(sv.length){
+    need(24);lab("Serviços");y+=4.5;var sw=[110,20,28,28],sa=["l","r","r","r"];
+    trow(["Descrição","Quantidade","Preço un","Valor total"],sw,sa,1);
+    sv.forEach(function(i){trow([i.desc,String(i.qtd),n2(i.preco),n2(i.qtd*i.preco)],sw,sa)});
+    y+=3;
+  }
+  need(18);
+  var tw=[52,52,82],tl=["Total serviços","Total peças","Total da ordem de serviço"],tv=[t.s,t.p,t.s+t.p],xx=m;
+  tw.forEach(function(w,i){d.rect(xx,y,w,14);d.setFont("helvetica","bold");d.setFontSize(8.5);d.text(tl[i],xx+w-2,y+4.5,{align:"right"});d.setFontSize(11);d.text(n2(tv[i]),xx+w-2,y+11,{align:"right"});xx+=w});
+  y+=18;
+  box("Garantia",o.gar||"3 meses");
+  box("Observações do recebimento",[o.acess?"Acessórios: "+o.acess:"",o.estado?"Estado na entrada: "+o.estado:""].filter(Boolean).join(" · "));
+  box("Observações do serviço",o.laudo);
+  box("Informações do técnico",o.tec?"Técnico: "+o.tec:"");
+  need(30);y+=16;d.setDrawColor(20);d.line(m,y,m+80,y);d.line(W-m-80,y,W-m,y);fnt(0);d.text("Assinatura do cliente",m+40,y+5,{align:"center"});d.text(String(co.nome||""),W-m-40,y+5,{align:"center"});
+  d.save("OS-"+pad(o.num)+" "+o.cliente.replace(/[^\w ]/g,"").trim()+".pdf");toast("PDF pronto");
+}
+function waText(o){return "Olá, "+o.cliente+"!\nOrdem de serviço nº "+pad(o.num)+" - "+(o.modelo||o.tipo)+"\nSegue o PDF para saber a situação da sua ordem.\nQualquer dúvida é só chamar!"}
+function waUrl(o){var dg=o.tel.replace(/\D/g,"");if(dg.length<=11)dg="55"+dg;return "https://wa.me/"+dg+"?text="+encodeURIComponent(waText(o))}
+
+var clientes=[],tecnicos=[],eC=null,eT=null;
+function techOpts(cur){var n=tecnicos.map(function(t){return t.nome});if(cur&&n.indexOf(cur)<0)n.push(cur);return n.map(function(x){return '<option'+(x===cur?" selected":"")+'>'+esc(x)+'</option>'}).join("")}
+function cmp(a,b){return a.nome.localeCompare(b.nome,"pt-BR")}
+var pecas=[],servicos=[],EDIT={};
+var CAD={
+  clientes:{tit:"Clientes",f:[["nome","Nome *"],["tel","WhatsApp / telefone","tel"],["doc","CPF / CNPJ"],["end","Endereço"],["email","E-mail","email"]],sub:function(x){return [x.tel,x.doc].filter(Boolean).join(" · ")}},
+  tecnicos:{tit:"Técnicos",f:[["nome","Nome *"]],sub:function(){return ""}},
+  pecas:{tit:"Peças",f:[["nome","Descrição *"],["cod","Código"],["preco","Preço (R$)","number"]],sub:function(x){return [x.cod,brl(x.preco)].filter(Boolean).join(" · ")}},
+  servicos:{tit:"Serviços",f:[["nome","Descrição *"],["preco","Preço (R$)","number"]],sub:function(x){return brl(x.preco)}}
+};
+function LISTS(c){return c==="clientes"?clientes:c==="tecnicos"?tecnicos:c==="pecas"?pecas:servicos}
+function vCad(){
+  var h='<h2>Cadastros</h2>';
+  Object.keys(CAD).forEach(function(col){
+    var cfg=CAD[col],cur=EDIT[col]?LISTS(col).find(function(x){return x.id===EDIT[col]}):null;
+    h+='<fieldset><legend>'+cfg.tit+'</legend><div class="grid">'+cfg.f.map(function(fl){return f(col+"_"+fl[0],fl[1],cur?cur[fl[0]]:"",fl[2]||"text")}).join("")+'</div><p class="row"><button class="btn" data-sv="'+col+'">'+(cur?"Salvar alterações":"Cadastrar")+'</button>'+(cur?'<button class="btn sec" data-cn="'+col+'">Cancelar</button>':"")+'</p><div>'+(LISTS(col).slice().sort(cmp).map(function(x){return '<div class="crow"><div><b>'+esc(x.nome)+'</b><br><span style="color:var(--mut);font-size:14px">'+esc(cfg.sub(x))+'</span></div><div class="row"><button class="btn sec" data-e="'+col+'|'+x.id+'">Editar</button><button class="btn del" data-d="'+col+'|'+x.id+'">Excluir</button></div></div>'}).join("")||'<p style="color:var(--mut)">Nenhum cadastro ainda.</p>')+'</div></fieldset>';
+  });
+  $("app").innerHTML=h;
+  document.querySelectorAll("[data-sv]").forEach(function(b){b.onclick=function(){saveCad(b.dataset.sv)}});
+  document.querySelectorAll("[data-cn]").forEach(function(b){b.onclick=function(){EDIT[b.dataset.cn]=null;vCad()}});
+  document.querySelectorAll("[data-e]").forEach(function(b){b.onclick=function(){var p=b.dataset.e.split("|");EDIT[p[0]]=p[1];vCad();window.scrollTo(0,0)}});
+  document.querySelectorAll("[data-d]").forEach(function(b){b.onclick=function(){armDel(b,function(){var p=b.dataset.d.split("|");delCad(p[0],p[1])})}});
+}
+async function saveCad(col){
+  var cfg=CAD[col],arr=LISTS(col),cur=EDIT[col]?arr.find(function(x){return x.id===EDIT[col]}):null;
+  if(!$(col+"_nome").value.trim())return toast("Preencha o nome ou a descrição");
+  var btn=document.querySelector('[data-sv="'+col+'"]');btn.disabled=true;
+  var r=cur||{id:col.charAt(0)+Date.now(),criado:new Date().toISOString()};
+  cfg.f.forEach(function(fl){var v=$(col+"_"+fl[0]).value.trim();r[fl[0]]=fl[2]==="number"?(parseFloat(v.replace(",","."))||0):v});
+  try{r._k=col;await db.doc(P(col,r.id)).set(r);if(!arr.some(function(x){return x.id===r.id}))arr.push(r);EDIT[col]=null;toast("Cadastro salvo");vCad()}
+  catch(e){btn.disabled=false;toast("Erro ao salvar o cadastro")}
+}
+function armDel(b,fn){
+  if(b.dataset.arm){fn();return}
+  b.dataset.arm="1";b.textContent="Confirmar exclusão";b.style.cssText="background:#b42318;color:#fff;border-color:#b42318";
+  setTimeout(function(){if(b.isConnected){delete b.dataset.arm;b.textContent="Excluir";b.style.cssText=""}},4000);
+}
+function delCad(col,id){
+  db.doc(P(col,id)).delete().then(function(){var arr=LISTS(col),i=arr.findIndex(function(x){return x.id===id});if(i>-1)arr.splice(i,1);EDIT[col]=null;toast("Cadastro excluído");vCad()}).catch(function(){toast("Erro ao excluir")});
+}
+
+/* EMPRESA */
+async function reauth(pw){var u=firebase.auth().currentUser;await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,pw));return u}
+function vConta(){
+  $("app").innerHTML='<h2>Minha conta</h2><fieldset><legend>Dados de acesso</legend><div class="grid">'+f("a_nome","Nome",acc.nome)+'<div><label for="a_email">E-mail</label><input id="a_email" value="'+esc(acc.email)+'" disabled></div></div><p><button class="btn" id="a_sv">Salvar</button></p></fieldset><fieldset><legend>Alterar senha</legend><div class="grid">'+f("a_old","Senha atual","","password")+f("a_new","Nova senha (mínimo 8 caracteres)","","password")+'</div><p><button class="btn sec" id="a_pw">Alterar senha</button></p></fieldset><fieldset><legend>Empresa</legend><p style="margin-top:0;color:var(--mut)">'+esc(co.nome||"—")+'</p><button class="btn sec" id="a_co">Editar dados da empresa</button></fieldset><fieldset><legend style="color:#b42318">Excluir conta</legend><p style="margin-top:0;color:var(--mut)">Apaga esta conta e todos os dados dela: ordens, clientes, técnicos, peças, serviços e dados da empresa. Não dá para desfazer.</p><div class="grid">'+f("a_dpw","Digite sua senha para confirmar","","password")+f("a_dtx","Digite EXCLUIR para confirmar","")+'</div><p><button class="btn del" id="a_del">Excluir minha conta</button></p></fieldset>';
+  $("a_co").onclick=function(){go("company")};
+  $("a_sv").onclick=async function(){
+    var nm=$("a_nome").value.trim();if(!nm)return toast("Informe o nome");
+    try{await firebase.auth().currentUser.updateProfile({displayName:nm});acc.nome=nm;applyCo();toast("Dados salvos")}catch(e){toast(fbErr(e))}
+  };
+  $("a_pw").onclick=async function(){
+    var a=$("a_old").value,b=$("a_new").value;
+    if(b.length<8)return toast("A nova senha precisa ter pelo menos 8 caracteres");
+    try{var u=await reauth(a);await u.updatePassword(b);$("a_old").value="";$("a_new").value="";toast("Senha alterada")}catch(e){toast(fbErr(e))}
+  };
+  $("a_del").onclick=async function(){
+    if($("a_dtx").value.trim()!=="EXCLUIR")return toast("Digite EXCLUIR para confirmar");
+    $("a_del").disabled=true;
+    try{
+      var u=await reauth($("a_dpw").value);
+      if(unsub){unsub();unsub=null}
+      var sn=await db.collection(DP).get();
+      for(var i=0;i<sn.docs.length;i++)await db.doc(DP+sn.docs[i].id).delete();
+      await u.delete();toast("Conta excluída");
+    }catch(e){$("a_del").disabled=false;toast(fbErr(e));if(uid&&!unsub)start()}
+  };
+}
+function vCompany(){coForm(false)}
+function coForm(first){
+  $("app").innerHTML='<h2>'+(first?"Cadastro da sua assistência":"Dados da empresa")+'</h2><p style="color:var(--mut)">'+(first?"Bem-vindo! Preencha os dados da sua empresa. Eles aparecem no sistema e em toda ordem impressa, e você pode mudar depois.":"Estes dados aparecem no sistema e em toda ordem impressa.")+'</p><fieldset><legend>Empresa</legend><div class="grid">'+f("c_nome","Nome da empresa *",co.nome)+f("c_sub","Texto abaixo do nome",co.sub,"text","Ex.: Assistência técnica autorizada Intelbras")+f("c_cnpj","CNPJ",co.cnpj)+f("c_tel","Telefone / WhatsApp",co.tel)+f("c_end","Endereço",co.end)+'</div></fieldset><button class="btn" id="c_sv">'+(first?"Começar a usar":"Salvar dados")+'</button>';
+  $("c_sv").onclick=async function(){
+    var n=$("c_nome").value.trim();if(!n)return toast("Informe o nome da empresa");
+    var c={_k:"config",nome:n,sub:$("c_sub").value.trim(),cnpj:$("c_cnpj").value.trim(),tel:$("c_tel").value.trim(),end:$("c_end").value.trim()};
+    $("c_sv").disabled=true;
+    try{await db.doc(P("config","empresa")).set(c);co=c;applyCo();toast("Dados salvos");if(first)start()}
+    catch(e){$("c_sv").disabled=false;toast("Erro ao salvar")}
+  };
+}
+$("menubtn").onclick=function(){$("side").classList.toggle("open")};
+$("logoff").onclick=logoff;
+$("who").onclick=function(){if(acc)go("conta")};
+$("side").addEventListener("click",function(e){if(e.target.tagName==="BUTTON"){this.classList.remove("open");e.target.blur()}});
+document.addEventListener("click",function(e){if(!e.target.closest("#side,#menubtn"))$("side").classList.remove("open")});
+boot();
+</script>
+</body>
+</html>
