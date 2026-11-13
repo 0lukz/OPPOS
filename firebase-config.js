@@ -3,10 +3,10 @@
 // > role até "Seus apps" > app Web (</>) > "Configuração do SDK" > opção "Config".
 // Troque só os valores entre aspas. Estas chaves não são secretas.
 window.FIREBASE_CONFIG = {
-  apiKey: "COLE_AQUI",
-  authDomain: "SEU-PROJETO.firebaseapp.com",
-  projectId: "SEU-PROJETO",
-  storageBucket: "SEU-PROJETO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000"
+  apiKey: "AIzaSyCVUn-YB6o-DysocYUzLTUNfJO89bCAQ-M",
+  authDomain: "oppos-7638f.firebaseapp.com",
+  projectId: "oppos-7638f",
+  storageBucket: "oppos-7638f.firebasestorage.app",
+  messagingSenderId: "528637174992",
+  appId: "1:528637174992:web:7be1efd8731c661fa3ead5"
 };
