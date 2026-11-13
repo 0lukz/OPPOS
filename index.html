@@ -188,7 +188,7 @@ function boot(){
 function afterAuth(u){acc={nome:u.displayName||"",email:u.email||""};uid=u.uid;DP="data/users/"+uid+"/";enter()}
 function loginScreen(){
   document.body.classList.add("locked");
-  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Fazer login</h1><p class="sub">Use a sua conta do sistema</p><label for="l_em">E-mail</label><input id="l_em" type="email" autocomplete="username"><label for="l_pw">Senha</label><input id="l_pw" type="password" autocomplete="current-password"><button type="button" class="lnk" id="l_forgot">Esqueci minha senha</button><label class="chk"><input type="checkbox" id="l_show"> Mostrar senha</label><label class="chk"><input type="checkbox" id="l_keep"> Manter conectado</label><p class="err" id="l_err" role="alert"></p><div class="go"><button class="btn" id="l_go">Entrar</button></div><div class="or">ou</div><button class="btn sec wide" id="l_new">Criar conta</button></div>');
+  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Fazer login</h1><p class="sub">Use a sua conta do sistema</p><label for="l_em">E-mail</label><input id="l_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="l_pw">Senha</label><input id="l_pw" type="password" autocomplete="current-password"><button type="button" class="lnk" id="l_forgot">Esqueci minha senha</button><label class="chk"><input type="checkbox" id="l_show"> Mostrar senha</label><label class="chk"><input type="checkbox" id="l_keep"> Manter conectado</label><p class="err" id="l_err" role="alert"></p><div class="go"><button class="btn" id="l_go">Entrar</button></div><div class="or">ou</div><button class="btn sec wide" id="l_new">Criar conta</button></div>');
   $("l_show").onchange=function(){$("l_pw").type=this.checked?"text":"password"};
   $("l_go").onclick=doLogin;$("l_pw").onkeydown=function(e){if(e.key==="Enter")doLogin()};
   $("l_new").onclick=signupScreen;$("l_em").focus();
@@ -200,7 +200,7 @@ function loginScreen(){
   };
 }
 function signupScreen(){
-  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Criar conta</h1><p class="sub">Cada conta tem o seu próprio sistema de ordens</p><label for="s_nm">Nome</label><input id="s_nm" type="text" autocomplete="name"><label for="s_em">E-mail</label><input id="s_em" type="email" autocomplete="username"><label for="s_pw">Senha (mínimo 8 caracteres)</label><input id="s_pw" type="password" autocomplete="new-password"><label for="s_pw2">Confirmar senha</label><input id="s_pw2" type="password" autocomplete="new-password"><label class="chk"><input type="checkbox" id="s_keep"> Manter conectado</label><p class="err" id="s_err" role="alert"></p><div class="go"><button class="btn" id="s_go">Cadastrar</button></div><div class="or">ou</div><button class="btn sec wide" id="s_back">Já tenho conta</button></div>');
+  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Criar conta</h1><p class="sub">Cada conta tem o seu próprio sistema de ordens</p><label for="s_nm">Nome</label><input id="s_nm" type="text" autocomplete="name"><label for="s_em">E-mail</label><input id="s_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="s_pw">Senha (mínimo 8 caracteres)</label><input id="s_pw" type="password" autocomplete="new-password"><label for="s_pw2">Confirmar senha</label><input id="s_pw2" type="password" autocomplete="new-password"><label class="chk"><input type="checkbox" id="s_keep"> Manter conectado</label><p class="err" id="s_err" role="alert"></p><div class="go"><button class="btn" id="s_go">Cadastrar</button></div><div class="or">ou</div><button class="btn sec wide" id="s_back">Já tenho conta</button></div>');
   $("s_go").onclick=doSignup;$("s_back").onclick=loginScreen;$("s_nm").focus();
 }
 async function doLogin(){
@@ -516,6 +516,11 @@ function coForm(first){
     catch(e){$("c_sv").disabled=false;toast("Erro ao salvar")}
   };
 }
+$("menubtn").onclick=function(){$("side").classList.toggle("open")};
+$("logoff").onclick=logoff;
+$("who").onclick=function(){if(acc)go("conta")};
+$("side").addEventListener("click",function(e){if(e.target.tagName==="BUTTON")this.classList.remove("open")});
+document.addEventListener("click",function(e){if(!e.target.closest("#side,#menubtn"))$("side").classList.remove("open")});
 boot();
 </script>
 </body>
