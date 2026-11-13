@@ -75,7 +75,9 @@ legend{font:700 18px "Barlow Condensed",Barlow,sans-serif;padding:0 6px;color:va
 @media (hover:hover){#menubtn{display:none}}
 #side{position:fixed;top:0;left:0;bottom:0;width:230px;z-index:30;display:flex;flex-direction:column;flex-wrap:nowrap;gap:6px;padding:84px 12px 12px;background:linear-gradient(180deg,#434a56,#262b33);border-right:6px solid #9aa3b2;transform:translateX(-224px);transition:transform .18s ease}
 #side::after{content:"";position:absolute;top:0;bottom:0;right:-16px;width:16px}
-#side:hover,#side:focus-within,#side.open{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}
+#side.open{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}
+@media (hover:hover){#side:hover,#side:focus-within{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}}
+#menubtn{position:relative;z-index:40}
 #side button{width:100%;text-align:left;background:rgba(255,255,255,.14);color:#fff;border:0;padding:12px 14px;border-radius:var(--r);font:600 16px Barlow,sans-serif;cursor:pointer}
 #side button:hover{background:rgba(255,255,255,.26)}
 #side button.on{background:#fff;color:#262b33;box-shadow:inset 5px 0 0 var(--g)}
@@ -519,7 +521,7 @@ function coForm(first){
 $("menubtn").onclick=function(){$("side").classList.toggle("open")};
 $("logoff").onclick=logoff;
 $("who").onclick=function(){if(acc)go("conta")};
-$("side").addEventListener("click",function(e){if(e.target.tagName==="BUTTON")this.classList.remove("open")});
+$("side").addEventListener("click",function(e){if(e.target.tagName==="BUTTON"){this.classList.remove("open");e.target.blur()}});
 document.addEventListener("click",function(e){if(!e.target.closest("#side,#menubtn"))$("side").classList.remove("open")});
 boot();
 </script>
