@@ -1,9 +1,10 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Cole aqui a configuração do seu app web do Firebase.
-// Onde achar: Firebase > engrenagem ao lado de "Visão geral do projeto" > Configurações do projeto
-// > role até "Seus apps" > app Web (</>) > "Configuração do SDK" > opção "Config".
-// Troque só os valores entre aspas. Estas chaves não são secretas.
-window.FIREBASE_CONFIG = {
+// Your web app's Firebase configuration
+const firebaseConfig = {
   apiKey: "AIzaSyCVUn-YB6o-DysocYUzLTUNfJO89bCAQ-M",
   authDomain: "oppos-7638f.firebaseapp.com",
   projectId: "oppos-7638f",
@@ -12,3 +13,5 @@ window.FIREBASE_CONFIG = {
   appId: "1:528637174992:web:7be1efd8731c661fa3ead5"
 };
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
