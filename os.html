@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ordem de Serviço</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f1;--card:#fff;--ink:#14231a;--mut:#5d6b62;--line:#d9e0da;--g:#0a8a3c;--gd:#066b2d;--gl:#e3f3e8;--warn:#b45309;--r:8px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1812;--card:#17231b;--ink:#e8f0ea;--mut:#98a89d;--line:#2a3b2f;--g:#3fc272;--gd:#2fa95e;--gl:#1b3324;--warn:#f0a94a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1812;--card:#17231b;--ink:#e8f0ea;--mut:#98a89d;--line:#2a3b2f;--g:#3fc272;--gd:#2fa95e;--gl:#1b3324;--warn:#f0a94a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Barlow,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+header{background:var(--g);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+:root[data-theme="dark"] header,:root:not([data-theme="light"]) header{--hb:1}
+.brand{font:700 28px/1 "Barlow Condensed",Barlow,sans-serif;letter-spacing:.5px}
+.brand small{display:block;font:500 13px Barlow,sans-serif;opacity:.9;letter-spacing:0;margin-top:3px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+nav button.on{background:#fff;color:#066b2d}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+h2{font:700 26px "Barlow Condensed",Barlow,sans-serif;margin:0 0 14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 12px;font:600 14px Barlow,sans-serif;cursor:pointer}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.chip b{margin-left:4px;opacity:.75}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);font:16px Barlow,sans-serif}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--g);outline-offset:1px}
+label{font-weight:600;font-size:14px;display:block;margin-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.full{grid-column:1/-1}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:16px;margin:0 0 16px}
+legend{font:700 18px "Barlow Condensed",Barlow,sans-serif;padding:0 6px;color:var(--gd)}
+.btn{background:var(--g);color:#fff;border:0;border-radius:var(--r);padding:10px 16px;font:600 15px Barlow,sans-serif;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.sec{background:var(--gl);color:var(--gd)}
+.btn.del{background:transparent;color:#b42318;border:1px solid #b4231855}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center}
+.num{font:700 22px "Barlow Condensed",sans-serif;color:var(--gd)}
+.item h3{margin:0;font-size:17px}.item p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.st{font-weight:600;font-size:13px;padding:3px 10px;border-radius:99px;background:var(--gl);color:var(--gd);display:inline-block}
+.st.s-Aguardando\ aprovação,.st.s-Aguardando\ peça{background:#fdeccf;color:var(--warn)}
+.st.s-Entregue,.st.s-Sem\ conserto{background:var(--line);color:var(--mut)}
+.empty{text-align:center;padding:40px 16px;color:var(--mut);background:var(--card);border:1px dashed var(--line);border-radius:var(--r)}
+.sheet{background:#fff;color:#111;border:1px solid var(--line);border-radius:var(--r);padding:28px;max-width:800px;margin:16px auto}
+.sheet h1{margin:0;font:700 30px "Barlow Condensed",sans-serif;color:#066b2d}
+.sh{display:flex;justify-content:space-between;border-bottom:3px solid #0a8a3c;padding-bottom:10px;margin-bottom:12px;gap:12px}
+.sh .no{text-align:right;font:700 24px "Barlow Condensed",sans-serif}
+.sheet h4{margin:14px 0 4px;font:700 16px "Barlow Condensed",sans-serif;color:#066b2d;border-bottom:1px solid #ccc}
+.sheet table{width:100%;border-collapse:collapse;font-size:14px}.sheet td{padding:3px 6px 3px 0;vertical-align:top}.sheet td:first-child{width:130px;font-weight:600}
+.sheet .t{font-size:12px;color:#444;margin-top:12px;white-space:pre-line}
+.sig{display:flex;gap:40px;margin-top:44px}.sig div{flex:1;border-top:1px solid #111;text-align:center;font-size:13px;padding-top:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:600;z-index:9}
+.lockbox{max-width:380px;margin:40px auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.lockbox p{color:var(--mut);margin:6px 0 14px}
+#lockbtn{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+.locked nav,.locked #lockbtn,.locked #menubtn,.locked #side{display:none}
+.locked #who{display:none}
+#who{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 14px Barlow,sans-serif;cursor:pointer;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#who:hover{background:rgba(255,255,255,.28)}
+#who:empty{display:none}
+#side .out{margin-top:auto;background:rgba(255,255,255,.08)}
+.auth{max-width:420px;margin:40px auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:36px 34px 30px}
+.auth .logo2{text-align:center;font:700 40px "Barlow Condensed",Barlow,sans-serif;color:var(--g);letter-spacing:5px}
+.auth h1{font:600 26px Barlow,sans-serif;margin:10px 0 2px;text-align:center}
+.auth .sub{text-align:center;color:var(--mut);margin:0 0 22px}
+.auth input[type=email],.auth input[type=password],.auth input[type=text]{padding:13px 14px;margin-bottom:14px}
+.auth .chk{display:flex;align-items:center;gap:8px;font-weight:500;margin:2px 0 10px}.auth .chk input{width:auto;margin:0}
+.auth .err{color:#b42318;min-height:22px;font-size:14px;margin:6px 0}
+.auth .go{display:flex;justify-content:flex-end}
+.auth .or{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;margin:20px 0}.auth .or::before,.auth .or::after{content:"";flex:1;border-top:1px solid var(--line)}
+.auth .wide{width:100%;text-align:center}
+
+#menubtn{background:rgba(255,255,255,.16);color:#fff;border:0;padding:9px 14px;border-radius:var(--r);font:600 15px Barlow,sans-serif;cursor:pointer}
+@media (hover:hover){#menubtn{display:none}}
+#side{position:fixed;top:0;left:0;bottom:0;width:230px;z-index:30;display:flex;flex-direction:column;flex-wrap:nowrap;gap:6px;padding:84px 12px 12px;background:linear-gradient(180deg,#434a56,#262b33);border-right:6px solid #9aa3b2;transform:translateX(-224px);transition:transform .18s ease}
+#side::after{content:"";position:absolute;top:0;bottom:0;right:-16px;width:16px}
+#side.open{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}
+@media (hover:hover){#side:hover,#side:focus-within{transform:none;box-shadow:4px 0 18px rgba(0,0,0,.3)}}
+#menubtn{position:relative;z-index:40}
+#side button{width:100%;text-align:left;background:rgba(255,255,255,.14);color:#fff;border:0;padding:12px 14px;border-radius:var(--r);font:600 16px Barlow,sans-serif;cursor:pointer}
+#side button:hover{background:rgba(255,255,255,.26)}
+#side button.on{background:#fff;color:#262b33;box-shadow:inset 5px 0 0 var(--g)}
+#hint{position:fixed;left:8px;top:50%;width:22px;height:56px;margin-top:-28px;z-index:25;pointer-events:none;opacity:.35;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:opacity .15s}
+#hint::before{content:"";width:10px;height:10px;border-top:3px solid currentColor;border-right:3px solid currentColor;transform:rotate(45deg);margin-left:-4px;border-radius:1px}
+body:has(#side:hover) #hint,body:has(#side:focus-within) #hint,body:has(#side.open) #hint,.locked #hint{opacity:0}
+@media (hover:none){#hint{display:none}}
+.crow{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:8px 0}
+.bh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.logo{background:#3a3a3a;color:#fff;font:700 26px/1 "Barlow Condensed",Barlow,sans-serif;letter-spacing:2px;padding:18px 22px}.logo span{color:#3fc272}
+.bi{text-align:right;font-size:13px;font-weight:600;line-height:1.4}
+.ttl{text-align:center;font:700 24px "Barlow Condensed",Barlow,sans-serif;margin:18px 0 4px}
+.lb{font-weight:700;font-size:13px;margin:12px 0 3px}
+.bx{border:1px solid #555;padding:6px 10px;min-height:32px;font-size:14px;overflow-wrap:anywhere}
+.cl2{display:grid;grid-template-columns:1.1fr 1.4fr;gap:8px}.g2{display:grid;grid-template-columns:1.2fr 1fr;gap:8px}
+.sc{overflow-x:auto}
+.sheet .it,.sheet .info{width:100%;border-collapse:collapse;font-size:13.5px}
+.sheet .it th,.sheet .it td,.sheet .info th,.sheet .info td{border:1px solid #555;padding:4px 8px;text-align:left;vertical-align:top}
+.sheet .it th,.sheet .info th{background:#eee;font-weight:700}
+.sheet .it td:first-child,.sheet .info td:first-child{width:auto;font-weight:400}
+.sheet .r{text-align:right}
+.tot{display:grid;grid-template-columns:1fr 1fr 1.4fr;margin-top:12px}.tot div{border:1px solid #555;padding:4px 10px;text-align:right}.tot span{display:block;font-weight:700;font-size:13px}.tot b{font-size:17px}
+.irow{display:grid;grid-template-columns:2fr 1fr 80px 110px 44px;gap:6px;margin-bottom:6px;align-items:center}.ihd{font-weight:600;font-size:13px;color:var(--mut)}
+@media (max-width:640px){.cl2,.g2{grid-template-columns:1fr}.irow{grid-template-columns:1fr 1fr}.ihd{display:none}.tot{grid-template-columns:1fr}}
+@media (max-width:600px){.item{grid-template-columns:1fr}.sheet{padding:16px}}
+@media print{body *{visibility:hidden}.sheet,.sheet *{visibility:visible}.sheet{position:absolute;left:0;top:0;width:100%;max-width:none;border:0;margin:0}}
+.auth .ver{text-align:center;color:var(--mut);font-size:12px;margin:18px 0 0}
+.auth .lnk{background:none;border:0;color:var(--g);font:600 14px Barlow,sans-serif;cursor:pointer;padding:0;margin:0 0 12px;text-decoration:underline}
+
+.bar{max-width:800px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;color:var(--mut);font-size:14px}
+.msg{max-width:480px;margin:60px auto;text-align:center;color:var(--mut)}
+@media print{.bar{display:none}}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body style="padding:16px">
+<div id="root"></div>
+<script>
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function br(d){d=String(d||"");return /^\d{4}-\d{2}-\d{2}$/.test(d)?d.split("-").reverse().join("/"):""}
+function pad(n){return String(parseInt(n,10)||0).padStart(4,"0")}
+function n2(v){return (+v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function calc(L){var p=0,s=0;(L||[]).forEach(function(i){var v=(+i.qtd||0)*(+i.preco||0);if(i.t==="s")s+=v;else p+=v});return{p:p,s:s}}
+function msg(t,p){$("root").innerHTML='<div class="msg"><h2>'+t+'</h2><p>'+p+'</p></div>'}
+function sheet(o){
+  var co=o.co||{},it=o.itens||[],pc=it.filter(function(i){return i.t!=="s"}),sv=it.filter(function(i){return i.t==="s"}),t=calc(it);
+  if(!it.length&&o.valor)t.p=+o.valor||0;
+  var b=function(x){return '<div class="bx">'+(x?esc(x):"&nbsp;")+'</div>'},td=function(x,c){return '<td'+(c?' class="'+c+'"':"")+'>'+esc(x)+'</td>'};
+  var nm=String(co.nome||"").toUpperCase(),k=nm.indexOf("BRAZ"),logo=k>0?esc(nm.slice(0,k))+'<span>'+esc(nm.slice(k))+'</span>':esc(nm);
+  var h='<div class="sheet"><div class="bh"><div class="logo">'+logo+'</div><div class="bi">'+[nm,co.sub,co.tel?"FONE: "+co.tel:"",co.end,co.cnpj?"CNPJ: "+co.cnpj:""].filter(Boolean).map(esc).join("<br>")+'</div></div>';
+  h+='<div class="ttl">Ordem de serviço Nº '+pad(o.num)+'</div>';
+  h+='<div class="lb">Cliente</div><div class="cl2"><div class="bx">'+esc(String(o.cliente||"").toUpperCase())+'</div><table class="info"><tr><th>Número da OS</th><td>'+pad(o.num)+'</td><th>Data de entrada</th><td>'+br(o.data)+'</td></tr><tr><th>Data prevista</th><td>'+br(o.prazo)+'</td><th>Data de conclusão</th><td>'+br(o.dconc)+'</td></tr><tr><th>Status</th><td colspan="3"><b>'+esc(o.status)+'</b></td></tr></table></div>';
+  h+='<div class="g2"><div><div class="lb">Equipamento</div>'+b([o.tipo,o.modelo].filter(Boolean).join(" · "))+'</div><div><div class="lb">Número de série do equipamento</div>'+b(o.serie)+'</div></div>';
+  h+='<div class="lb">Problema</div>'+b(o.defeito);
+  h+='<div class="lb">Peças</div><div class="sc"><table class="it"><tr><th>Descrição</th><th>Código</th><th class="r">Quantidade</th><th>UN</th><th class="r">Preço un</th><th class="r">Valor total</th></tr>'+(pc.length?pc.map(function(i){return '<tr>'+td(i.desc)+td(i.cod)+td(i.qtd,"r")+td("PE")+td(n2(i.preco),"r")+td(n2(i.qtd*i.preco),"r")+'</tr>'}).join(""):'<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>')+'</table></div>';
+  if(sv.length)h+='<div class="lb">Serviços</div><div class="sc"><table class="it"><tr><th>Descrição</th><th class="r">Quantidade</th><th class="r">Preço un</th><th class="r">Valor total</th></tr>'+sv.map(function(i){return '<tr>'+td(i.desc)+td(i.qtd,"r")+td(n2(i.preco),"r")+td(n2(i.qtd*i.preco),"r")+'</tr>'}).join("")+'</table></div>';
+  h+='<div class="tot"><div><span>Total serviços</span><b>'+n2(t.s)+'</b></div><div><span>Total peças</span><b>'+n2(t.p)+'</b></div><div><span>Total da ordem de serviço</span><b>'+n2(t.p+t.s)+'</b></div></div>';
+  h+='<div class="lb">Garantia</div>'+b(o.gar||"3 meses");
+  var rec=[o.acess?"Acessórios: "+o.acess:"",o.estado?"Estado na entrada: "+o.estado:""].filter(Boolean).join(" · ");
+  h+='<div class="lb">Observações do recebimento</div>'+b(rec)+'<div class="lb">Observações do serviço</div>'+b(o.laudo)+'<div class="lb">Informações do técnico</div>'+b(o.tec?"Técnico: "+o.tec:"");
+  var hs=(o.hist||[]);
+  if(hs.length)h+='<div class="lb">Andamento</div><div class="bx">'+hs.map(function(x){var d=new Date(x.em);return esc((isNaN(d)?"":d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"})+" — ")+x.status)}).join("<br>")+'</div>';
+  return h+'</div>';
+}
+function show(o){
+  var d=new Date(o.atualizado);
+  document.title="Ordem de Serviço Nº "+pad(o.num)+" · "+((o.co&&o.co.nome)||"");
+  $("root").innerHTML='<div class="bar"><span>Atualizada em '+esc(isNaN(d)?"":d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}))+'</span><button class="btn" id="pr">Imprimir / Salvar PDF</button></div>'+sheet(o);
+  $("pr").onclick=function(){window.print()};
+}
+(function(){
+  var k=window.FIREBASE_CONFIG,tk=new URLSearchParams(location.search).get("o");
+  if(!tk)return msg("Link incompleto","Peça à assistência técnica que reenvie o link da sua ordem de serviço.");
+  if(!window.firebase||!k||!k.apiKey||/COLE_AQUI/.test(k.apiKey))return msg("Site em configuração","Tente novamente mais tarde.");
+  try{firebase.initializeApp(k);
+    firebase.firestore().collection("shared").doc(tk).onSnapshot(function(s){
+      if(!s.exists)msg("Ordem não encontrada","Este link não existe mais. Peça um novo à assistência técnica.");else show(s.data());
+    },function(){msg("Não foi possível abrir","Tente de novo em instantes ou peça um novo link.")});
+  }catch(e){msg("Não foi possível abrir","Tente de novo em instantes.")}
+})();
+</script>
+</body>
+</html>

@@ -104,6 +104,7 @@ body:has(#side:hover) #hint,body:has(#side:focus-within) #hint,body:has(#side.op
 @media (max-width:640px){.cl2,.g2{grid-template-columns:1fr}.irow{grid-template-columns:1fr 1fr}.ihd{display:none}.tot{grid-template-columns:1fr}}
 @media (max-width:600px){.item{grid-template-columns:1fr}.sheet{padding:16px}}
 @media print{body *{visibility:hidden}.sheet,.sheet *{visibility:visible}.sheet{position:absolute;left:0;top:0;width:100%;max-width:none;border:0;margin:0}}
+.auth .ver{text-align:center;color:var(--mut);font-size:12px;margin:18px 0 0}
 .auth .lnk{background:none;border:0;color:var(--g);font:600 14px Barlow,sans-serif;cursor:pointer;padding:0;margin:0 0 12px;text-decoration:underline}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -140,7 +141,7 @@ function msg(t,p){return '<div class="lockbox"><h2>'+t+'</h2><p>'+p+'</p></div>'
 function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf)))}
 async function saveOrder(o){
   o._k="orders";o.atualizado=new Date().toISOString();
-  try{await db.doc(P("orders",o.id)).set(o);if(!find(o.id))orders.push(o);return true}
+  try{await db.doc(P("orders",o.id)).set(o);if(!find(o.id))orders.push(o);if(o.token)pushShare(o);return true}
   catch(e){toast("Erro ao salvar. Tente novamente.");return false}
 }
 function cl(x){return JSON.parse(JSON.stringify(x))}
@@ -190,7 +191,7 @@ function boot(){
 function afterAuth(u){acc={nome:u.displayName||"",email:u.email||""};uid=u.uid;DP="data/users/"+uid+"/";enter()}
 function loginScreen(){
   document.body.classList.add("locked");
-  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Fazer login</h1><p class="sub">Use a sua conta do sistema</p><label for="l_em">E-mail</label><input id="l_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="l_pw">Senha</label><input id="l_pw" type="password" autocomplete="current-password"><button type="button" class="lnk" id="l_forgot">Esqueci minha senha</button><label class="chk"><input type="checkbox" id="l_show"> Mostrar senha</label><label class="chk"><input type="checkbox" id="l_keep"> Manter conectado</label><p class="err" id="l_err" role="alert"></p><div class="go"><button class="btn" id="l_go">Entrar</button></div><div class="or">ou</div><button class="btn sec wide" id="l_new">Criar conta</button></div>');
+  screen('<div class="auth"><div class="logo2">OPPOS</div><h1>Fazer login</h1><p class="sub">Use a sua conta do sistema</p><label for="l_em">E-mail</label><input id="l_em" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label for="l_pw">Senha</label><input id="l_pw" type="password" autocomplete="current-password"><button type="button" class="lnk" id="l_forgot">Esqueci minha senha</button><label class="chk"><input type="checkbox" id="l_show"> Mostrar senha</label><label class="chk"><input type="checkbox" id="l_keep"> Manter conectado</label><p class="err" id="l_err" role="alert"></p><div class="go"><button class="btn" id="l_go">Entrar</button></div><div class="or">ou</div><button class="btn sec wide" id="l_new">Criar conta</button><p class="ver">OPPOS · versão 3</p></div>');
   $("l_show").onchange=function(){$("l_pw").type=this.checked?"text":"password"};
   $("l_go").onclick=doLogin;$("l_pw").onkeydown=function(e){if(e.key==="Enter")doLogin()};
   $("l_new").onclick=signupScreen;$("l_em").focus();
@@ -366,15 +367,18 @@ function sheetHtml(o){
 }
 function vView(id){
   var o=find(id);if(!o)return go("list");
-  var h='<div class="row"><button class="btn sec" id="voltar">Voltar</button><button class="btn sec" id="imp">Imprimir OS</button><button class="btn" id="pdf">Baixar PDF</button><a class="btn" id="wa" target="_blank" rel="noopener">Enviar por WhatsApp</a><button class="btn sec" id="ed">Editar</button><button class="btn del" id="del">Excluir</button></div>'+sheetHtml(o)+'<p style="color:var(--mut);font-size:14px">Histórico: '+(o.hist&&o.hist.length?o.hist.map(function(x){return new Date(x.em).toLocaleString("pt-BR")+" — "+esc(x.status)}).join("; "):"sem alterações de status")+'</p>';
+  var h='<div class="row"><button class="btn sec" id="voltar">Voltar</button><button class="btn sec" id="imp">Imprimir OS</button><button class="btn" id="pdf">Baixar PDF</button><a class="btn" id="wa" target="_blank" rel="noopener">Enviar por WhatsApp</a><button class="btn sec" id="cplink">Copiar link</button><button class="btn sec" id="ed">Editar</button><button class="btn del" id="del">Excluir</button></div>'+sheetHtml(o)+'<p style="color:var(--mut);font-size:14px">Histórico: '+(o.hist&&o.hist.length?o.hist.map(function(x){return new Date(x.em).toLocaleString("pt-BR")+" — "+esc(x.status)}).join("; "):"sem alterações de status")+'</p>';
   $("app").innerHTML=h;
   $("voltar").onclick=function(){go("list")};$("imp").onclick=function(){try{window.print()}catch(e){toast("Use Ctrl+P para imprimir")}};
   $("ed").onclick=function(){go("form",id)};$("pdf").onclick=function(){pdfOS(o)};
-  $("del").onclick=function(){armDel($("del"),function(){db.doc(P("orders",id)).delete().then(function(){orders=orders.filter(function(x){return x.id!==id});toast("Ordem excluída");go("list")}).catch(function(){toast("Erro ao excluir")})})};
+  $("del").onclick=function(){armDel($("del"),function(){if(o.token)firebase.firestore().collection("shared").doc(o.token).delete().catch(function(){});db.doc(P("orders",id)).delete().then(function(){orders=orders.filter(function(x){return x.id!==id});toast("Ordem excluída");go("list")}).catch(function(){toast("Erro ao excluir")})})};
   var tt=calc(o.itens||[]),tot=tt.p+tt.s||(+o.valor||0);
   var msg="Olá, "+o.cliente.split(" ")[0]+"! Aqui é da "+co.nome+(co.sub?" ("+co.sub+")":"")+".\nOrdem de serviço nº "+pad(o.num)+" — "+o.tipo+(o.modelo?" "+o.modelo:"")+".\nStatus: "+o.status+"."+(tot?"\nValor do orçamento: "+brl(tot)+".":"")+(o.prazo?"\nPrevisão de entrega: "+br(o.prazo)+".":"")+"\nQualquer dúvida, é só responder esta mensagem.";
   var dg=o.tel.replace(/\D/g,"");if(dg.length<=11)dg="55"+dg;
-  $("wa").href="https://wa.me/"+dg+"?text="+encodeURIComponent(msg);
+  var wb="https://wa.me/"+dg+"?text=",lnk="";
+  $("wa").href=wb+encodeURIComponent(msg);
+  $("cplink").onclick=function(){if(!lnk)return toast("Gerando o link…");navigator.clipboard.writeText(lnk).then(function(){toast("Link copiado")},function(){toast("Não foi possível copiar")})};
+  ensureShare(o).then(function(u){if(!u)return;lnk=u;if(cur==="view"&&curId===id)$("wa").href=wb+encodeURIComponent(msg+"\n\nVeja a sua ordem de serviço completa:\n"+u)});
 }
 async function pdfOS(o){
   if(!window.jspdf){toast("A biblioteca de PDF não carregou. Use Imprimir OS.");return}
@@ -502,10 +506,31 @@ function vConta(){
       var u=await reauth($("a_dpw").value);
       if(unsub){unsub();unsub=null}
       var sn=await db.collection(DP).get();
-      for(var i=0;i<sn.docs.length;i++)await db.doc(DP+sn.docs[i].id).delete();
+      for(var i=0;i<sn.docs.length;i++){var dd=sn.docs[i].data();if(dd&&dd.token){try{await firebase.firestore().collection("shared").doc(dd.token).delete()}catch(e){}}await db.doc(DP+sn.docs[i].id).delete()}
       await u.delete();toast("Conta excluída");
     }catch(e){$("a_del").disabled=false;toast(fbErr(e));if(uid&&!unsub)start()}
   };
+}
+function shareDoc(o){
+  var t=function(x){return x==null?"":String(x)};
+  return {owner:uid,num:o.num,cliente:t(o.cliente),tipo:t(o.tipo),modelo:t(o.modelo),serie:t(o.serie),acess:t(o.acess),estado:t(o.estado),defeito:t(o.defeito),status:t(o.status),gar:t(o.gar)||"3 meses",data:t(o.data),prazo:t(o.prazo),dconc:t(o.dconc),laudo:t(o.laudo),tec:t(o.tec),valor:t(o.valor),
+    itens:(o.itens||[]).map(function(i){return {t:i.t==="s"?"s":"p",desc:t(i.desc),cod:t(i.cod),qtd:+i.qtd||0,preco:+i.preco||0}}),
+    hist:(o.hist||[]).map(function(x){return {em:t(x.em),status:t(x.status)}}),
+    atualizado:new Date().toISOString(),
+    co:{nome:t(co.nome),sub:t(co.sub),cnpj:t(co.cnpj),tel:t(co.tel),end:t(co.end)}};
+}
+async function pushShare(o){
+  if(!o.token)return false;
+  try{await firebase.firestore().collection("shared").doc(o.token).set(shareDoc(o));return true}
+  catch(e){toast("Não foi possível atualizar o link do cliente");return false}
+}
+function shareUrl(tk){return new URL("os.html",location.href).href.split("?")[0].split("#")[0]+"?o="+tk}
+async function ensureShare(o){
+  if(!o.token){
+    o.token=b64(crypto.getRandomValues(new Uint8Array(18))).replace(/\+/g,"-").replace(/\//g,"_");
+    if(!(await saveOrder(o))){delete o.token;return ""}
+  }
+  return shareUrl(o.token);
 }
 function vCompany(){coForm(false)}
 function coForm(first){
